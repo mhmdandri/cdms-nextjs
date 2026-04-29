@@ -33,13 +33,13 @@ const NavbarMobile = () => {
           Testimonials
         </Link>
         <button
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/auth/login")}
           className="block w-full text-left text-gray-600 hover:text-gray-900"
         >
           Sign In
         </button>
         <button
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/auth/login")}
           className="block w-full px4 py-2 bg-primary text-white rounded-lg hover:bg-blue-800 transition-colors text-center"
         >
           Get Started
