@@ -7,7 +7,7 @@ const IllustrationRegister = () => {
     <div className="hidden lg:flex lg:w-1/2 relative bg-linear-to-br from-[#1E3A8A] to-[#1E40AF] overflow-hidden">
       <div className="absolute inset-0 bg-black/20"></div>
       <Image
-        src="/ilustration.jpg"
+        src="/register-ilus.jpg"
         alt="registerIllustration"
         fill
         priority
