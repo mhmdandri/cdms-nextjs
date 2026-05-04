@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -21,10 +22,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", inter.variable)}
       data-scroll-behavior="smooth"
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <main>{children}</main>
+        <Toaster position="top-right" duration={2000} richColors />
+      </body>
     </html>
   );
 }

@@ -1,34 +1,47 @@
-import { Container, Eye, EyeOff, Lock, User } from "lucide-react";
+"use client";
+import { signIn } from "next-auth/react";
+import { Container, Eye, EyeOff, Loader, Lock, User } from "lucide-react";
 import React, { useState } from "react";
-//import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Form = () => {
-  //const router = useRouter();
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
-      console.log({ username, password, rememberMe });
-      setError("Username atau password salah");
-      //router.push("/dashboard");
-      // const res = await signIn("credentials", {
-      //   username,
-      //   password,
-      //   redirect: false,
-      // });
-      // if (res?.error === "CredentialsSignin") {
-      //   setError("Username atau password salah");
-      //   return;
-      // }
-      // if (res?.ok) {
-      //   router.push("/dashboard");
-      // }
+      const res = await signIn("credentials", {
+        username,
+        password,
+        rememberMe,
+        redirect: false,
+      });
+      console.log(res);
+      if (res?.error) {
+        if (res?.error === "CredentialsSignin") {
+          setError("Username atau password salah");
+        } else {
+          setError("Terjadi kesalahan saat login");
+        }
+        return;
+      }
+      router.push("/dashboard");
+      toast.success("Berhasil masuk, melanjutkan ke dashboard...");
     } catch (error) {
-      console.error("Login failed:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Terjadi kesalahan saat login");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -122,9 +135,16 @@ const Form = () => {
           </div>
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-[#1E3A8A] text-white py-3 rounded-lg hover:bg-blue-800 transition-colors font-medium shadow-lg shadow-blue-500/30"
           >
-            Sign In
+            {isLoading ? (
+              <div>
+                <Loader className="animate-spin w-5 h-5 text-white mx-auto" />
+              </div>
+            ) : (
+              <div>Masuk</div>
+            )}
           </button>
         </form>
         <div className="mt-6 pt-6 border-t border-gray-200">

@@ -3,10 +3,17 @@ import { Menu, Package, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import NavbarMobile from "./mobile/NavbarMobile";
 
 const Navbar = () => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const toPage = () => {
+    startTransition(() => {
+      router.push("/auth/login");
+    });
+  };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
@@ -45,7 +52,7 @@ const Navbar = () => {
               Testimonials
             </Link>
             <button
-              onClick={() => router.push("/auth/login")}
+              onClick={toPage}
               className="cursor-pointer text-gray-600 hover:text-gray-900 transition-colors"
             >
               Sign In
