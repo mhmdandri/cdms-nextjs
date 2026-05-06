@@ -1,5 +1,18 @@
-import { Bell, Search, User } from "lucide-react";
-import React from "react";
+"use client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Bell, LogOut, User2 } from "lucide-react";
+import { signOut } from "next-auth/react";
+import { toast } from "sonner";
+import { useRouter } from "@bprogress/next/app";
+import { getInitials } from "@/lib/utils";
+import BreadcrumbComponent from "@/components/Breadcrumb";
 
 type Props = {
   data: {
@@ -9,34 +22,81 @@ type Props = {
 };
 
 const Navbar = ({ data }: Props) => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    try {
+      signOut();
+      router.push("/auth/login", { scroll: false, startPosition: 0.3 });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
   return (
-    <div className="bg-white border-b border-gray-200 px-6 py-4">
+    <div
+      className="bg-background/80 backdrop-blur-md 
+      border-b border-border px-6 py-4"
+    >
       <div className="flex items-center justify-between">
-        <div className="flex-1 max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input
-              type="text"
-              placeholder="search container, bookings..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
-            />
-          </div>
+        {/* Search */}
+        <div className="flex-1">
+          <BreadcrumbComponent />
         </div>
+
+        {/* Right side */}
         <div className="flex items-center gap-4 ml-4">
-          <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#F97316] rounded-full"></span>
+          {/* Notification */}
+          <button
+            className="relative p-2 rounded-lg 
+            hover:bg-muted transition-colors"
+          >
+            <Bell className="w-5 h-5 text-muted-foreground" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
           </button>
-          <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
+
+          {/* User */}
+          <div className="flex items-center gap-3 pl-4 border-l border-border">
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium text-foreground">
                 {data.fullName}
               </p>
-              <p className="text-xs text-gray-500">{data.email}</p>
+              <p className="text-xs text-muted-foreground">{data.email}</p>
             </div>
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-white" />
-            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="w-10 h-10 rounded-full 
+                  bg-primary text-primary-foreground 
+                  flex items-center justify-center 
+                  hover:opacity-90 transition"
+                >
+                  {getInitials(data.fullName)}
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className="mr-1 w-48">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
+                  <DropdownMenuItem>
+                    <User2 className="mr-2 w-4 h-4" />
+                    Profile
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem
+                    onSelect={handleLogout}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <LogOut className="mr-2 w-4 h-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

@@ -7,11 +7,7 @@ const LoginPage = async () => {
   const session = await auth();
   if (session) return redirect("/dashboard");
 
-  return (
-    <>
-      <LoginForm />
-    </>
-  );
+  return <LoginForm />;
 };
 
 export default LoginPage;

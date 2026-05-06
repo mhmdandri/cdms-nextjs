@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import Providers from "@/components/ProgressProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -16,18 +17,29 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", inter.variable)}
+      className={`h-screen antialiased ${inter.variable}`}
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        <main>{children}</main>
-        <Toaster position="top-right" duration={2000} richColors />
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
+            <main className="flex-1">{children}</main>
+          </Providers>
+        </ThemeProvider>
+
+        <Toaster position="top-right" />
       </body>
     </html>
   );

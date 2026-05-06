@@ -28,15 +28,22 @@ const menuItems = [
 
 const Sidebar = () => {
   const path = usePathname();
+
   return (
-    <div className="w-64 bg-[#1E3A8A] text-white flex flex-col">
-      <div className="p-6 border-b border-blue-700">
-        <h1 className="text-xl font-bold">CDMS</h1>
-        <p className="text-xs text-blue-200 mt-1">Container Depot System</p>
+    <div className="w-64 bg-card border-r border-border flex flex-col">
+      {/* Header */}
+      <div className="p-6 border-b border-border">
+        <h1 className="text-lg font-semibold text-foreground">CDMS</h1>
+        <p className="text-xs text-muted-foreground mt-1">
+          Container Depot System
+        </p>
       </div>
+
+      {/* Menu */}
       <nav className="flex-1 p-4 space-y-1">
         {menuItems.map((item) => {
           const Icon = item.icon;
+
           const isActive =
             item.path === "/dashboard"
               ? path === "/dashboard"
@@ -46,14 +53,18 @@ const Sidebar = () => {
             <Link
               key={item.path}
               href={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive
-                  ? "bg-blue-700 text-white"
-                  : "text-blue-100 hover:bg-blue-800"
-              }`}
+              className={`
+                flex items-center gap-3 px-4 py-3 rounded-lg text-sm
+                transition-all
+                ${
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }
+              `}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-sm">{item.label}</span>
+              {item.label}
             </Link>
           );
         })}

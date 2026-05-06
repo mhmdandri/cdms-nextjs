@@ -3,61 +3,86 @@ import { pricingPlans } from "@/lib/landingPage";
 import { Check } from "lucide-react";
 import React from "react";
 import { useRouter } from "next/navigation";
+
 const Pricing = () => {
   const router = useRouter();
+
   return (
     <section
       id="pricing"
-      className="py-20 bg-linear-to-b from-gray-50 to-white"
+      className="py-20 bg-linear-to-b from-background to-muted/40"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Heading */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl lg:text-5xl font-semibold tracking-tight text-foreground mb-4">
             Simple, Transparent Pricing
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
             Choose the plan that fits your depot size and needs
           </p>
         </div>
 
+        {/* Plans */}
         <div className="grid md:grid-cols-3 gap-8">
           {pricingPlans.map((plan, index) => (
             <div
               key={index}
-              className={`bg-white rounded-2xl p-8 border-2 ${
+              className={`relative rounded-2xl p-8 border 
+              transition-all duration-200 
+              ${
                 plan.highlighted
-                  ? "border-[#1E3A8A] shadow-2xl scale-105"
-                  : "border-gray-200"
+                  ? "bg-card border-primary shadow-xl scale-105"
+                  : "bg-card border-border hover:shadow-md"
               }`}
             >
+              {/* Badge */}
               {plan.highlighted && (
-                <div className="inline-block px-4 py-1 bg-[#F97316] text-white text-sm font-medium rounded-full mb-4">
+                <div
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 
+                  px-4 py-1 bg-primary text-primary-foreground 
+                  text-xs font-medium rounded-full shadow-sm"
+                >
                   Most Popular
                 </div>
               )}
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+
+              {/* Title */}
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 {plan.name}
               </h3>
+
+              {/* Price */}
               <div className="mb-6">
-                <span className="text-4xl font-bold text-gray-900">
+                <span className="text-4xl font-bold text-foreground">
                   {plan.price}
                 </span>
-                <span className="text-gray-600 ml-2">{plan.period}</span>
+                <span className="text-muted-foreground ml-2">
+                  {plan.period}
+                </span>
               </div>
+
+              {/* Features */}
               <ul className="space-y-3 mb-8">
                 {plan.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-                    <span className="text-gray-600">{feature}</span>
+                    <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
+
+              {/* Button */}
               <button
                 onClick={() => router.push("/auth/login")}
-                className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                className={`w-full py-3 rounded-lg font-medium 
+                transition-all duration-200 
+                ${
                   plan.highlighted
-                    ? "bg-[#1E3A8A] text-white hover:bg-blue-800"
-                    : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md"
+                    : "bg-muted text-foreground hover:bg-muted/80"
                 }`}
               >
                 Get Started

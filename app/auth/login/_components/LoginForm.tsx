@@ -6,12 +6,20 @@ import Form from "./Form";
 const LoginForm = () => {
   return (
     <div className="flex min-h-screen">
-      {/* Ilustrasi Page Kiri */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-linear-to-br from-[#1E3A8A] to-[#1E40AF] overflow-hidden ">
+      {/* LEFT - Illustration */}
+      <div
+        className="hidden lg:flex lg:w-1/2 relative 
+        bg-linear-to-br from-primary to-primary/80 
+        overflow-hidden"
+      >
         <Illustration />
       </div>
-      {/* LoginForm Page Kanan */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-gray-50">
+
+      {/* RIGHT - Form */}
+      <div
+        className="flex-1 flex items-center justify-center p-8 
+        bg-linear-to-b from-background to-muted/40"
+      >
         <Form />
       </div>
     </div>

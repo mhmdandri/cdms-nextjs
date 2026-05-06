@@ -5,19 +5,36 @@ import { ArrowRight } from "lucide-react";
 
 const CTA = () => {
   const router = useRouter();
+
   return (
-    <section className="py-20 bg-linear-to-br from-[#1E3A8A] to-blue-700">
+    <section
+      className="py-20 
+      bg-linear-to-br from-primary to-primary/80 
+      text-primary-foreground"
+    >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">
+        {/* Title */}
+        <h2 className="text-3xl lg:text-5xl font-semibold tracking-tight mb-6">
           Start Managing Your Depot Today
         </h2>
-        <p className="text-xl text-blue-100 mb-8">
+
+        {/* Subtitle */}
+        <p className="text-lg lg:text-xl text-primary-foreground/80 mb-8">
           Join 500+ depots worldwide that trust CDMS for their container
           operations
         </p>
+
+        {/* Button */}
         <button
           onClick={() => router.push("/auth/login")}
-          className="px-8 py-4 bg-white text-[#1E3A8A] rounded-lg hover:bg-gray-100 transition-colors font-medium shadow-lg inline-flex items-center gap-2"
+          className="px-8 py-4 
+          bg-background text-foreground 
+          rounded-lg 
+          hover:bg-background/90 
+          transition-all duration-200 
+          font-medium 
+          shadow-sm hover:shadow-md 
+          inline-flex items-center gap-2"
         >
           Get Started Free
           <ArrowRight className="w-5 h-5" />
