@@ -5,6 +5,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Bell, LogOut, User2 } from "lucide-react";
@@ -20,9 +21,34 @@ type Props = {
     email: string;
   };
 };
+const notifications = [
+  {
+    id: 1,
+    title: "Pesanan baru",
+    description: "Ada pesanan baru dari customer",
+    time: "2 menit lalu",
+    read: false,
+  },
+  {
+    id: 2,
+    title: "Pembayaran berhasil",
+    description: "Invoice INV-2026 berhasil dibayar",
+    time: "10 menit lalu",
+    read: false,
+  },
+  {
+    id: 3,
+    title: "Update sistem",
+    description: "Sistem berhasil diperbarui",
+    time: "1 jam lalu",
+    read: true,
+  },
+];
 
 const Navbar = ({ data }: Props) => {
   const router = useRouter();
+
+  const unreadCount = notifications.filter((item) => !item.read).length;
 
   const handleLogout = () => {
     try {
@@ -41,21 +67,95 @@ const Navbar = ({ data }: Props) => {
       border-b border-border px-6 py-4"
     >
       <div className="flex items-center justify-between">
-        {/* Search */}
         <div className="flex-1">
           <BreadcrumbComponent />
         </div>
-
         {/* Right side */}
         <div className="flex items-center gap-4 ml-4">
           {/* Notification */}
-          <button
-            className="relative p-2 rounded-lg 
-            hover:bg-muted transition-colors"
-          >
-            <Bell className="w-5 h-5 text-muted-foreground" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="
+                  relative p-2 rounded-lg
+                  hover:bg-muted transition-colors
+                "
+              >
+                <Bell className="w-5 h-5 text-muted-foreground" />
+
+                {unreadCount > 0 && (
+                  <span
+                    className="
+                      absolute -top-1 -right-1
+                      min-w-5 h-5 px-1
+                      flex items-center justify-center
+                      rounded-full bg-primary
+                      text-[10px] text-white font-medium
+                    "
+                  >
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-90">
+              <DropdownMenuLabel className="flex items-center justify-between">
+                <span>Notifications</span>
+
+                {unreadCount > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    {unreadCount} unread
+                  </span>
+                )}
+              </DropdownMenuLabel>
+
+              <DropdownMenuSeparator />
+
+              <div className="max-h-75 overflow-y-auto">
+                {notifications.length > 0 ? (
+                  notifications.map((item) => (
+                    <DropdownMenuItem
+                      key={item.id}
+                      className="
+                        flex flex-col items-start
+                        gap-1 p-4 cursor-pointer
+                      "
+                    >
+                      <div className="flex items-start justify-between w-full">
+                        <p className="text-sm font-medium">{item.title}</p>
+
+                        {!item.read && (
+                          <span className="w-2 h-2 rounded-full bg-primary mt-1" />
+                        )}
+                      </div>
+
+                      <p className="text-xs text-muted-foreground">
+                        {item.description}
+                      </p>
+
+                      <span className="text-[11px] text-muted-foreground">
+                        {item.time}
+                      </span>
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <div className="p-6 text-center text-sm text-muted-foreground">
+                    Tidak ada notifikasi
+                  </div>
+                )}
+              </div>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                className="justify-center font-medium cursor-pointer"
+                onClick={() => router.push("/notifications")}
+              >
+                Lihat semua notifikasi
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* User */}
           <div className="flex items-center gap-3 pl-4 border-l border-border">

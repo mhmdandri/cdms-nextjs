@@ -1,4 +1,8 @@
 "use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,57 +11,46 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React from "react";
 
-type BreadcrumbItem = {
+type BreadcrumbType = {
   label: string;
   href: string;
 };
 
 const BreadcrumbComponent = () => {
-  const path = usePathname();
-  const pathSegments = path.split("/").filter(Boolean);
+  const pathname = usePathname();
 
-  const isDashboard =
-    pathSegments.length === 1 && pathSegments[0] === "dashboard";
+  const pathSegments = pathname.split("/").filter(Boolean);
 
-  const breadcrumbs: BreadcrumbItem[] = pathSegments.map((segment, index) => {
-    const href = "/" + pathSegments.slice(0, index + 1).join("/");
-    return {
-      label:
-        segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ""),
-      href,
-    };
-  });
+  const breadcrumbs: BreadcrumbType[] = pathSegments.map((segment, index) => ({
+    label:
+      segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " "),
+    href: "/" + pathSegments.slice(0, index + 1).join("/"),
+  }));
+
   return (
     <Breadcrumb>
-      <BreadcrumbList>
-        {isDashboard ? (
-          <BreadcrumbItem>
-            <BreadcrumbPage>Dashboard</BreadcrumbPage>
-          </BreadcrumbItem>
-        ) : (
-          breadcrumbs.map((item, index) => {
-            const isLast = index === breadcrumbs.length - 1;
+      <BreadcrumbList className="items-center gap-0.5">
+        {breadcrumbs.map((item, index) => {
+          const isLast = index === breadcrumbs.length - 1;
 
-            return (
-              <div key={item.href} className="flex items-center">
-                {index !== 0 && <BreadcrumbSeparator />}
+          return (
+            <React.Fragment key={item.href}>
+              {index > 0 && <BreadcrumbSeparator className="opacity-60" />}
 
-                <BreadcrumbItem>
-                  {isLast ? (
-                    <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                  ) : (
-                    <BreadcrumbLink asChild>
-                      <Link href={item.href}>{item.label}</Link>
-                    </BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
-              </div>
-            );
-          })
-        )}
+              <BreadcrumbItem>
+                {isLast ? (
+                  <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink asChild>
+                    <Link href={item.href}>{item.label}</Link>
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </React.Fragment>
+          );
+        })}
       </BreadcrumbList>
     </Breadcrumb>
   );
