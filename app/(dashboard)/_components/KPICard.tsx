@@ -9,7 +9,7 @@ type KPICardProps = {
     value: number;
     isPositive: boolean;
   };
-  color?: string;
+  color?: "blue" | "green" | "orange" | "purple";
 };
 
 const KPICard = ({
@@ -20,33 +20,76 @@ const KPICard = ({
   color = "blue",
 }: KPICardProps) => {
   const colorClasses = {
-    blue: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
-    green:
-      "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400",
-    orange:
-      "bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400",
-    purple:
-      "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
+    blue: {
+      bg: "bg-blue-500/10",
+      text: "text-blue-500",
+      iconBg: "bg-blue-500/15",
+    },
+
+    green: {
+      bg: "bg-green-500/10",
+      text: "text-green-500",
+      iconBg: "bg-green-500/15",
+    },
+
+    orange: {
+      bg: "bg-orange-500/10",
+      text: "text-orange-500",
+      iconBg: "bg-orange-500/15",
+    },
+
+    purple: {
+      bg: "bg-purple-500/10",
+      text: "text-purple-500",
+      iconBg: "bg-purple-500/15",
+    },
   }[color];
+
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+    <div
+      className="bg-card border border-border rounded-xl p-6 
+      shadow-sm hover:shadow-md transition-all duration-200"
+    >
       <div className="flex items-start justify-between">
+        {/* Content */}
         <div className="flex-1">
-          <p className="text-sm text-gray-600 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm text-muted-foreground mb-2">{title}</p>
+
+          <p className="text-3xl font-semibold text-foreground tracking-tight">
+            {value}
+          </p>
+
           {trend && (
-            <p
-              className={`text-sm mt-2 ${trend.isPositive ? "text-green-600" : "text-red-600"}`}
-            >
-              {trend.isPositive ? "▲" : "▼"} {Math.abs(trend.value)}% from last
-              week
-            </p>
+            <div className="mt-3 flex items-center gap-2">
+              <span
+                className={`text-xs font-medium px-2 py-1 rounded-full
+                ${
+                  trend.isPositive
+                    ? "bg-green-500/10 text-green-500"
+                    : "bg-red-500/10 text-red-500"
+                }`}
+              >
+                {trend.isPositive ? "▲" : "▼"} {Math.abs(trend.value)}%
+              </span>
+
+              <span className="text-xs text-muted-foreground">
+                from last week
+              </span>
+            </div>
           )}
         </div>
+
+        {/* Icon */}
         <div
-          className={`w-12 h-12 rounded-lg ${colorClasses} flex items-center justify-center`}
+          className={`w-12 h-12 rounded-xl flex items-center justify-center
+          ${colorClasses.bg}`}
         >
-          <Icon className="w-6 h-6" />
+          <div
+            className={`w-10 h-10 rounded-lg flex items-center justify-center
+            ${colorClasses.iconBg}`}
+          >
+            <Icon className={`w-5 h-5 ${colorClasses.text}`} />
+          </div>
         </div>
       </div>
     </div>

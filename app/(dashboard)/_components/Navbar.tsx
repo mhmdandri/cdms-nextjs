@@ -11,7 +11,7 @@ import {
 import { Bell, LogOut, User2 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
-import { useRouter } from "@bprogress/next/app";
+import { useRouter } from "@bprogress/next";
 import { getInitials } from "@/lib/utils";
 import BreadcrumbComponent from "@/components/Breadcrumb";
 
@@ -50,10 +50,16 @@ const Navbar = ({ data }: Props) => {
 
   const unreadCount = notifications.filter((item) => !item.read).length;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      signOut();
-      router.push("/auth/login", { scroll: false, startPosition: 0.3 });
+      await signOut({
+        redirect: false,
+      });
+      router.replace("/auth/login", {
+        scroll: false,
+        startPosition: 0.3,
+      });
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

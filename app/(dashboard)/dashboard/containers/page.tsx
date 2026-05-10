@@ -1,7 +1,8 @@
 import React from "react";
+import ContainerPage from "./_components/ContainerPage";
 
-const ContainerPage = () => {
-  return <div>ContainerPage</div>;
+const Container = () => {
+  return <ContainerPage />;
 };
 
-export default ContainerPage;
+export default Container;

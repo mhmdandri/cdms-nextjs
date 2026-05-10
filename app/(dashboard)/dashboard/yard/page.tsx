@@ -1,7 +1,7 @@
 import React from "react";
-
+import YardManagement from "./_components/YardManagement";
 const YardPage = () => {
-  return <div>YardPage</div>;
+  return <YardManagement />;
 };
 
 export default YardPage;
